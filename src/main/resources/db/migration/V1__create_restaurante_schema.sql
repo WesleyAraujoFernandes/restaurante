@@ -49,7 +49,7 @@ CREATE TABLE pedidos_items (
     quantidade INTEGER NOT NULL CHECK (quantidade > 0),
     preco_unitario NUMERIC(10,2) NOT NULL CHECK (precho_unitario >= 0),
     observacao TEXT,
-    status VARCHAR(30) NOT NULL DEFAULT 'PENDENTE',]
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDENTE',
     CHECK (status IN ('PENDENTE', 'EM PREPARO', 'PRONTO', 'ENTREGUE', 'CANCELADO'))
 );
 
@@ -68,4 +68,17 @@ CREATE TABLE pagamentos (
     criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CHECK (forma_pagamento IN ('DINHEIRO', 'CARTAO_CREDITO', 'CARTAO_DEBITO', 'PIX')),
     CHECK (status IN ('PENDENTE', 'APROVADO', 'RECUSADO', 'CANCELADO'))
+);
+
+CREATE INDEX idx_pagamentos_pedido ON pagamentos(pedido_id);
+CREATE INDEX idx_pagamentos_status ON pagamentos(status);
+
+CREATE TABLE fechamentos_conta(
+    id BIGSERIAL PRIMARY KEY,
+    pedido_id BIGINT NOT NULL UNIQUE REFERENCES pedidos(id),
+    subtotal NUMERIC(10,2) NOT NULL CHECK (subtotal >= 0),
+    taxa_servico NUMERIC(10,2) NOT NULL DEFAULT 0 CHECK (taxa_servico >= 0),
+    desconto NUMERIC(10,2) NOT NULL DEFAULT 0 CHECK (desconto >= 0),
+    total NUMERIC(10,2) NOT NULL DEFAULT 0 CHECK (total >= 0),
+    data_fechamento TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
