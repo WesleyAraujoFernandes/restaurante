@@ -1,17 +1,18 @@
 package dev.matheuslf.restaurante.domain.entity;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
-import dev.matheuslf.restaurante.domain.enums.StatusPedido;
+import dev.matheuslf.restaurante.domain.enums.StatusItemPedido;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,27 +20,23 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "pedidos")
+@Table(name = "pedidos_itens")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pedido {
+public class PedidoItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "data_abertura")
-    private LocalDateTime dataAbertura;
-    @Column(name = "data_fechamento")
-    private LocalDateTime dataFechamento;
-    @Column(name = "status", nullable = false, columnDefinition = "varchar(20) default 'ABERTO'")
-    private StatusPedido status = StatusPedido.ABERTO;
+    private Integer quantidade;
+    @Column(name = "preco_unitario")
+    private BigDecimal precoUnitario;
     private String observacao;
-
+    @Enumerated(EnumType.STRING)
+    private StatusItemPedido status = StatusItemPedido.PENDENTE;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mesa_id")
-    private Mesa mesa;
-
-    @PrePersist
-    public void prePersist() {
-        this.dataAbertura = LocalDateTime.now();
-    }
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "produto_id")
+    private Produto produto; 
 }

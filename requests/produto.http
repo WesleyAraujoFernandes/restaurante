@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:8080
+
+### Cadastrar Produto
+POST {{baseUrl}}/produtos
+Content-Type: application/json
+
+{
+    "categoriaId": 2,
+    "nome": "Parmegiana de Frango",
+    "descricao": "Filé de frango com molho de tomate, queijo e especiarias",
+    "preco": 49.90,
+    "disponivel": true,
+    "tempoPreparoMinutos": 35
+}
+
+### Buscar produto por ID
+GET {{baseUrl}}/produtos/7
+
+### Listar Produtos
+GET {{baseUrl}}/produtos?page=0&size=10&sort=nome,asc
+
+### Atualizar Produto
+PUT {{baseUrl}}/produtos/1
+Content-Type: application/json
+
+{
+    "nome": "Batatas Fritas",
+    "descricao": "Porção de bata frita crocante",
+    "preco": 28.90,
+    "disponivel": true,
+    "tempoPreparoMinutos": 15,
+    "categoriaId": 1,
+    "categoriaNome": "Entradas",
+    "criadoEm": "2026-07-09T14:40:53.166358",
+    "atualizadoEm": null
+}
+
+### Deletar Produto
+DELETE {{baseUrl}}/produtos/7

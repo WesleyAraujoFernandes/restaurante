@@ -1,8 +1,8 @@
 package dev.matheuslf.restaurante.domain.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import dev.matheuslf.restaurante.domain.enums.StatusPedido;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,7 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,27 +19,26 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "pedidos")
+@Table(name = "fechamento_conta")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pedido {
+public class FechamentoConta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "data_abertura")
-    private LocalDateTime dataAbertura;
+    private BigDecimal subtotal;
+    @Column(name = "taxa_servico")
+    private BigDecimal taxaServico;
+    private BigDecimal desconto;
+    private BigDecimal total;
     @Column(name = "data_fechamento")
     private LocalDateTime dataFechamento;
-    @Column(name = "status", nullable = false, columnDefinition = "varchar(20) default 'ABERTO'")
-    private StatusPedido status = StatusPedido.ABERTO;
-    private String observacao;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mesa_id")
-    private Mesa mesa;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
 
     @PrePersist
     public void prePersist() {
-        this.dataAbertura = LocalDateTime.now();
+        this.dataFechamento = LocalDateTime.now();
     }
 }

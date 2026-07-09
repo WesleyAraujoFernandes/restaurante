@@ -1,8 +1,8 @@
 package dev.matheuslf.restaurante.domain.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import dev.matheuslf.restaurante.domain.enums.StatusPedido;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,27 +20,34 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "pedidos")
+@Table(name = "produtos")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pedido {
+public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "data_abertura")
-    private LocalDateTime dataAbertura;
-    @Column(name = "data_fechamento")
-    private LocalDateTime dataFechamento;
-    @Column(name = "status", nullable = false, columnDefinition = "varchar(20) default 'ABERTO'")
-    private StatusPedido status = StatusPedido.ABERTO;
-    private String observacao;
-
+    private String nome;
+    private String descricao;
+    private BigDecimal preco;
+    private Boolean disponivel = true;
+    @Column(name = "tempo_preparo_minutos")
+    private Integer tempoPreparoMinutos;
+    @Column(name = "criado_em")
+    private LocalDateTime criadoEm;
+    @Column(name = "atualizado_em")
+    private LocalDateTime atualizadoEm;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mesa_id")
-    private Mesa mesa;
+    @JoinColumn(name = "categoria_id")
+    private CategoriaProduto categoria;
 
     @PrePersist
     public void prePersist() {
-        this.dataAbertura = LocalDateTime.now();
+        this.criadoEm = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.atualizadoEm = LocalDateTime.now();
     }
 }
