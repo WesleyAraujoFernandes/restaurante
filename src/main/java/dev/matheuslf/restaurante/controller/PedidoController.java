@@ -7,10 +7,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 
+import dev.matheuslf.restaurante.dto.PedidoItemRequest;
+import dev.matheuslf.restaurante.dto.PedidoItemResponse;
 import dev.matheuslf.restaurante.dto.PedidoRequest;
 import dev.matheuslf.restaurante.dto.PedidoResponse;
 import dev.matheuslf.restaurante.service.PedidoService;
@@ -36,5 +41,16 @@ public class PedidoController {
     @GetMapping("/{id}")
     public PedidoResponse buscarPorId(@PathVariable Long id) {
         return pedidoService.buscarPorId(id);
+    }
+
+    @PostMapping("/{pedidoId}/itens")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PedidoItemResponse adicionarItem(@PathVariable Long pedidoId, @RequestBody PedidoItemRequest request) {
+        return pedidoService.adicionarItem(pedidoId, request);
+    }
+
+    @GetMapping("/{pedidoId}/itens")
+    public List<PedidoItemResponse> listarItens(@PathVariable Long pedidoId) {
+        return pedidoService.listarItens(pedidoId);
     }
 }
