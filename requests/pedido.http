@@ -13,10 +13,10 @@ Content-Type: application/json
 GET {{baseUrl}}/pedidos?page=0&size=1&sort=dataAbertura,desc
 
 ### Buscar pedido por ID
-GET {{baseUrl}}/pedidos/12
+GET {{baseUrl}}/pedidos/13
 
 ### Adicionar item ao pedido
-POST {{baseUrl}}/pedidos/12/itens
+POST {{baseUrl}}/pedidos/13/itens
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 }
 
 ### Adicionar um outro item ao pedido
-POST {{baseUrl}}/pedidos/12/itens
+POST {{baseUrl}}/pedidos/13/itens
 Content-Type: application/json
 
 {
@@ -36,4 +36,4 @@ Content-Type: application/json
 }
 
 ### Lista itens do pedido
-GET {{baseUrl}}/pedidos/12/itens
+GET {{baseUrl}}/pedidos/13/itens
