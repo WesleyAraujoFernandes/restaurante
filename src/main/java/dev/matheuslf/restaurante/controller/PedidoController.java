@@ -18,6 +18,7 @@ import dev.matheuslf.restaurante.dto.PedidoItemRequest;
 import dev.matheuslf.restaurante.dto.PedidoItemResponse;
 import dev.matheuslf.restaurante.dto.PedidoRequest;
 import dev.matheuslf.restaurante.dto.PedidoResponse;
+import dev.matheuslf.restaurante.service.PagamentoService;
 import dev.matheuslf.restaurante.service.PedidoService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PedidoController {
     private final PedidoService pedidoService;
+    private final PagamentoService pagamentoService; 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -52,5 +54,11 @@ public class PedidoController {
     @GetMapping("/{pedidoId}/itens")
     public List<PedidoItemResponse> listarItens(@PathVariable Long pedidoId) {
         return pedidoService.listarItens(pedidoId);
+    }
+
+    @PostMapping("/pedidos/{pedidoId}/pagar")
+    @ResponseStatus(HttpStatus.OK)
+    public void pagar(Long pedidoId, String formaPagamento) {
+        pagamentoService.pagar(pedidoId, formaPagamento);
     }
 }

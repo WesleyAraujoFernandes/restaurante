@@ -1,12 +1,21 @@
 @baseUrl = http://localhost:8080
 
-### Abrir pedido para a mesa
+### Abrir pedido para a mesa 1
 POST {{baseUrl}}/pedidos
 Content-Type: application/json
 
 {
     "mesaId": 1,
     "observacao": "Cliente pediu atendimento rápido"
+}
+
+### Abrir pedido para a mesa 2
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+    "mesaId": 2,
+    "observacao": "Teste para verificar o Worker"
 }
 
 ### Listar pedidos
@@ -25,15 +34,38 @@ Content-Type: application/json
     "observacao": "Sem cebola"
 }
 
-### Adicionar um outro item ao pedido
-POST {{baseUrl}}/pedidos/13/itens
+### Adicionar item ao pedido 2
+POST {{baseUrl}}/pedidos/14/itens
 Content-Type: application/json
 
 {
-    "produtoId": 2,
+    "produtoId": 6,
+    "quantidade": 2,
+    "observacao": "Sem sal"
+}
+
+### Adicionar um outro item ao pedido
+POST {{baseUrl}}/pedidos/14/itens
+Content-Type: application/json
+
+{
+    "produtoId": 9,
     "quantidade": 1,
-    "observacao": "Bem passado"
+    "observacao": "Bem sequinha"
 }
 
 ### Lista itens do pedido
 GET {{baseUrl}}/pedidos/13/itens
+
+### Novo produto
+POST {{baseUrl}}/produtos
+Content-Type: application/json
+
+{
+    "categoriaId": 2,
+    "nome": "Batatinha Mexicana",
+    "descricao": "Batatinha Mexicana Frita",
+    "preco": 10.20,
+    "disponivel": true,
+    "tempoPreparoMinutos": 1
+}
